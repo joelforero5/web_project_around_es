@@ -1,0 +1,49 @@
+class Card {
+  constructor(data, cardSelector) {
+    this._name = data.name;
+    this._link = data.link;
+    this._cardSelector = cardSelector;
+  }
+
+  _getTemplate() {
+    return document
+      .querySelector(this._cardSelector)
+      .content.querySelector(".card")
+      .cloneNode(true);
+  }
+  _setEventListeners() {
+    this._deleteButton.addEventListener("click", this._handleDeleteCard);
+    this._likeButton.addEventListener("click", this._handleLikeCard);
+    this._cardImage.addEventListener("click", handleImageClick(this));
+  }
+
+  _handleDeleteCard = () => {
+    this._element.remove();
+    this._element = null;
+  };
+  _handleLikeCard = () => {
+    this._likeButton.classList.toggle(".card__like-button_is-active");
+  };
+  getView() {
+    this._element = this._getTemplate();
+
+    this._cardImage = this._element.querySelector(".card__image");
+    this._deleteButton = this._element.querySelector(".card__delete-button");
+    this._cardTitle = this._element.querySelector(".card__title");
+    this._likeButton = this._element.querySelector(".card__like-button");
+
+    this._cardImage.src = this._link;
+    this._cardImage.alt = this._name;
+    this._cardTitle.textContent = this._name;
+    //set listeners
+    this._setEventListeners();
+    return this._element;
+  }
+  getLink() {
+    return this._link;
+  }
+  getName() {
+    return this._name;
+  }
+}
+export default Card;
