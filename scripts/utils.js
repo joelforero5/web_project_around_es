@@ -96,4 +96,5 @@ export {
   handleOpenAddCardModal,
   handlePopupClose,
   renderCard,
+  handleImageClick
 };
