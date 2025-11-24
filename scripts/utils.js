@@ -86,6 +86,9 @@ const openModal = (modal) => {
 const handleImageClick = (card) => {
   imageElement.src = card.getLink();
   imageCaption.textContent = card.getName();
+  imageElement.alt = card.getName();
+  openModal(imageModalWindow);
+
 };
 
 export {
