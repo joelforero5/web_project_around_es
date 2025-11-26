@@ -8,6 +8,7 @@ import {
   renderCard,
   openModal,
 } from "./utils.js";
+import FormValidator from "./FormValidator.js";
 const initialCards = [
   {
     name: "Valle de Yosemite",
@@ -37,10 +38,10 @@ const initialCards = [
 const validationConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__Button",
-  inactiveButtonClass: ".popup__button_disabled",
-  inputErrorClass: ".popup__input_type_error",
-  errorClass: ".error_visible",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__input-error_visible",
 };
 
 //buttons
@@ -51,10 +52,13 @@ const popups = document.querySelectorAll(".popup");
 //forms
 const cardForm = document.forms["new-card-form"];
 const profileForm = document.forms["edit-profile-form"];
+const forms = document.forms["popup__form"];
 //wraps
 const cardsWraps = document.querySelector(".cards__list");
 const editFormModalWindow = document.querySelector("#edit-popup");
 const cardFormModalWindow = document.querySelector("#new-card-popup");
+const cardFormValidator  = new FormValidator(validationConfig, cardForm);
+const profileFormValidator  = new FormValidator(validationConfig, profileForm);
 
 //listeners
 initialCards.forEach((cardData) => {
@@ -71,9 +75,13 @@ openAddCardFormButton.addEventListener("click", () => {
 
 popups.forEach((popup) => {
   popup.addEventListener("mousedown", (evt) => {
-    handlePopupClose(evt, validationConfig);
+    handlePopupClose(evt,[cardFormValidator,profileFormValidator]);
   });
 });
 
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 cardForm.addEventListener("submit", handleCardFormSubmit);
+
+
+cardFormValidator.enableValidation();
+profileFormValidator.enableValidation();

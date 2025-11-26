@@ -4,6 +4,7 @@ const cardsWrap = document.querySelector(".cards__list");
 const editFormModalWindow = document.querySelector("#edit-popup");
 const cardFormModalWindow = document.querySelector("#new-card-popup");
 const cardFormElement = cardFormModalWindow.querySelector(".popup__form");
+const profileFormElement = editFormModalWindow.querySelector(".popup__form");
 //profile DOM
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
@@ -36,14 +37,18 @@ const handleEscUp = (evt) => {
   evt.preventDefault();
   isEscEvent(evt, closeModal);
 };
-const closeModal = (modal) => {
+const closeModal = (modal, validators) => {
   modal.classList.remove("popup_is-opened");
   document.removeEventListener("keyup", handleEscUp);
+  validators?.forEach((validator) => {
+    validator.ResetValidation();
+  });
 };
 const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
   profileTitle.textContent = titleInput.value;
   profileDescription.textContent = descriptionInput.value;
+  closeModal(editFormModalWindow);
 };
 const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
@@ -70,12 +75,12 @@ const handleOpenEditModal = (modal) => {
 const handleOpenAddCardModal = (modal) => {
   openModal(modal);
 };
-const handlePopupClose = (evt, validationConfig) => {
+const handlePopupClose = (evt, validators) => {
   if (
     evt.target.classList.contains("popup") ||
     evt.target.classList.contains("popup__close")
   ) {
-    closeModal(evt.currentTarget);
+    closeModal(evt.currentTarget, validators);
   }
 };
 const openModal = (modal) => {
