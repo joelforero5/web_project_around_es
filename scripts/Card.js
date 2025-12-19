@@ -1,9 +1,10 @@
 import { handleImageClick } from "./utils.js";
 class Card {
-  constructor(data, cardSelector) {
+  constructor(data, cardSelector,handleImageClick) {
     this._name = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
+    this._handleImageClick = handleImageClick;
   }
 
   _getTemplate() {
@@ -15,7 +16,7 @@ class Card {
   _setEventListeners() {
     this._deleteButton.addEventListener("click", this._handleDeleteCard);
     this._likeButton.addEventListener("click", this._handleLikeCard);
-    this._cardImage.addEventListener("click",()=>{handleImageClick(this);});
+    this._cardImage.addEventListener("click",()=>{this._handleImageClick(this);});
   }
 
   _handleDeleteCard = () => {
