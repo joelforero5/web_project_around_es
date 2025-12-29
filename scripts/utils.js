@@ -2,6 +2,7 @@ import Card from "./Card.js";
 import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 import Section from "./Section.js";
+import UserInfo from "./UserInfo.js";
 //constants
 export const editFormSelector = ".edit-profile-form";
 //data and elements
@@ -80,10 +81,18 @@ export const closeEditButton = editFormModalWindow.querySelector(".popup__close"
 export const popupImage = new PopupWithImage("#image-popup");
 export const popupCardForm = new PopupWithForm("#new-card-popup");
 export const popupProfileForm = new PopupWithForm("#edit-popup");
+export const userInfo = new UserInfo({
+  nameSelector: ".profile__title",
+  descriptionSelector: ".profile__description",
+});
 
 export const handleProfileFormSubmit = (evt) => {
-  profileTitle.textContent = titleInput.value;
-  profileDescription.textContent = descriptionInput.value;
+  //profileTitle.textContent = titleInput.value;
+  //profileDescription.textContent = descriptionInput.value;
+  userInfo.setUserInfo({
+    name: titleInput.value,
+    description: descriptionInput.value,
+  });
   popupProfileForm.close();
 };
 export const handleCardFormSubmit = (evt) => {
@@ -105,8 +114,11 @@ export const handleCardFormSubmit = (evt) => {
 };
 
 export const handleOpenEditModal = (modal) => {
-  titleInput.value = profileTitle.textContent;
-  descriptionInput.value = profileDescription.textContent;
+  //titleInput.value = profileTitle.textContent;
+  //descriptionInput.value = profileDescription.textContent;
+  const userData = userInfo.getUserInfo();
+  titleInput.value = userData.name;
+  descriptionInput.value = userData.description;
   modal.open();
 };
 export const handleOpenAddCardModal = (modal) => {

@@ -54,13 +54,33 @@ En esta versión del proyecto se han implementado varias mejoras respecto a la v
 ```bash
 web_project_around/
 │
-├── index.html
+├── blocks/
+│   └── card.css
+│   └── cards.css
+│   └── content.css
+│   └── footer.css
+│   └── header.css
+│   └── page.css
+│   └── popup.css
+│   └── profile.css
+├── images/
 ├── pages/
 │   └── index.css
 ├── scripts/
-│   └── script.js
-├── images/
-├── favicon.ico
+│   └── Card.js
+│   └── FormValidator.js
+│   └── index.js
+│   └── Popup.js
+│   └── PopupWithForm.js
+│   └── PopupWithImage.js
+│   └── Section.js
+│   └── UserInfo.js
+│   └── utils.js
+├── vendor/
+│   └── fonts/
+│   └── fonts.css
+│   └── normalize.css
+├── index.html
 └── README.md
 
 ```
