@@ -1,4 +1,5 @@
 import Card from "./Card.js";
+import PopupWithImage from "./PopupWithImage.js";
 //constants
 export const editFormSelector = ".edit-profile-form";
 //data and elements
@@ -76,7 +77,8 @@ export const imageDeleteButton = imageModalWindow.querySelector(".card__delete-b
 //close buttons
 export const closeImageButton = imageModalWindow.querySelector(".popup__close");
 export const closeEditButton = editFormModalWindow.querySelector(".popup__close");
-
+export const popupImage = new PopupWithImage("#image-popup");
+popupImage.setEventListeners();
 //handlers
 export const isEscEvent = (evt, action) => {
   if (evt.key === "Escape") {
@@ -96,13 +98,13 @@ export const closeModal = (modal, validators) => {
   });
 };
 export const handleProfileFormSubmit = (evt) => {
-  evt.preventDefault();
+  //evt.preventDefault();
   profileTitle.textContent = titleInput.value;
   profileDescription.textContent = descriptionInput.value;
   closeModal(editFormModalWindow);
 };
 export const handleCardFormSubmit = (evt) => {
-  evt.preventDefault();
+  //evt.preventDefault();
   const newCard = {
     name: cardNameInput.value,
     link: cardLinkInput.value,
@@ -112,7 +114,7 @@ export const handleCardFormSubmit = (evt) => {
   cardFormElement.reset();
 };
 export const createCard = (data) => {
-  return new Card(data, "#card-template").getView();
+  return new Card(data, "#card-template", popupImage).getView();
 };
 export const renderCard = (data, wrap) => {
   wrap.prepend(createCard(data));

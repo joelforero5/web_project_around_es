@@ -31,9 +31,9 @@ const cardFormModalWindow = document.querySelector("#new-card-popup");
 const cardFormValidator  = new FormValidator(validationConfig, cardFormElement);
 const profileFormValidator  = new FormValidator(validationConfig, profileFormElement);
 
-const popupProfileForm = new PopupWithForm("#edit-popup",profileFormSelector,handleCardFormSubmit);
+const popupProfileForm = new PopupWithForm("#edit-popup",profileFormSelector,handleProfileFormSubmit);
 popupProfileForm.setEventListeners();
-const popupCardForm = new PopupWithForm("#new-card-popup",cardFormSelector,handleProfileFormSubmit);
+const popupCardForm = new PopupWithForm("#new-card-popup",cardFormSelector,handleCardFormSubmit);
 popupCardForm.setEventListeners();
 const popupImage = new PopupWithImage("#image-popup");
 popupImage.setEventListeners();
@@ -64,8 +64,8 @@ sectionCards.renderItems();
   //});
 //});
 
-profileFormElement.addEventListener("submit", handleProfileFormSubmit);
-cardFormElement.addEventListener("submit", handleCardFormSubmit);
+//profileFormElement.addEventListener("submit", handleProfileFormSubmit);
+//cardFormElement.addEventListener("submit", handleCardFormSubmit);
 
 
 cardFormValidator.enableValidation();
