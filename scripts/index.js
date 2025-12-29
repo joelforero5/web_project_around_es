@@ -7,64 +7,36 @@ import {
   handlePopupClose,
   renderCard,
   openModal,
+  initialCards,
+  validationConfig,
+  openEditFormButton,
+  openAddCardFormButton,
+  popup,
+  profileFormSelector,
+  cardFormSelector,
+  cardFormElement,
+  profileFormElement
 } from "./utils.js";
 import FormValidator from "./FormValidator.js";
-const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg",
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg",
-  },
-];
-const validationConfig = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__input-error_visible",
-};
+import Card from "./Card.js";
+import Section from "./Section.js";
+import PopupWithForm from "./PopupWithForm.js";
+import PopupWithImage from "./PopupWithImage.js";
 
-//buttons
-const openEditFormButton = document.querySelector(".profile__edit-button");
-const openAddCardFormButton = document.querySelector(".profile__add-button");
-//popups
-const popups = document.querySelectorAll(".popup");
-//forms
-const cardForm = document.forms["new-card-form"];
-const profileForm = document.forms["edit-profile-form"];
-const forms = document.forms["popup__form"];
+
 //wraps
 const cardsWraps = document.querySelector(".cards__list");
 const editFormModalWindow = document.querySelector("#edit-popup");
 const cardFormModalWindow = document.querySelector("#new-card-popup");
-const cardFormValidator  = new FormValidator(validationConfig, cardForm);
-const profileFormValidator  = new FormValidator(validationConfig, profileForm);
+const cardFormValidator  = new FormValidator(validationConfig, cardFormElement);
+const profileFormValidator  = new FormValidator(validationConfig, profileFormElement);
 
-//listeners
-initialCards.forEach((cardData) => {
-  renderCard(cardData, cardsWraps);
-});
-
+const popupProfileForm = new PopupWithForm("#edit-popup",profileFormSelector,handleCardFormSubmit);
+popupProfileForm.setEventListeners();
+const popupCardForm = new PopupWithForm("#new-card-popup",cardFormSelector,handleProfileFormSubmit);
+popupCardForm.setEventListeners();
+const popupImage = new PopupWithImage("#image-popup");
+popupImage.setEventListeners();
 openEditFormButton.addEventListener("click", () => {
   handleOpenEditModal(editFormModalWindow);
 });
@@ -73,14 +45,27 @@ openAddCardFormButton.addEventListener("click", () => {
   handleOpenAddCardModal(cardFormModalWindow);
 });
 
-popups.forEach((popup) => {
-  popup.addEventListener("mousedown", (evt) => {
-    handlePopupClose(evt,[cardFormValidator,profileFormValidator]);
-  });
-});
+const sectionCards = new Section(
+  {
+    items: initialCards,
+    renderer: (cardData) => {
+      const card = new Card(cardData, "#card-template",popupImage);
+      sectionCards.addItem(card.getView());
+    }
+  },
+  ".cards__list"
+);
+sectionCards.renderItems();
 
-profileForm.addEventListener("submit", handleProfileFormSubmit);
-cardForm.addEventListener("submit", handleCardFormSubmit);
+
+//popups.forEach((popup) => {
+ // popup.addEventListener("mousedown", (evt) => {
+   // handlePopupClose(evt,[cardFormValidator,profileFormValidator]);
+  //});
+//});
+
+profileFormElement.addEventListener("submit", handleProfileFormSubmit);
+cardFormElement.addEventListener("submit", handleCardFormSubmit);
 
 
 cardFormValidator.enableValidation();

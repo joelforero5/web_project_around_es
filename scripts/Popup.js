@@ -1,14 +1,17 @@
+import { closeModal} from "./utils.js";
 class Popup {
     constructor(popupSelector) {
-        this._popup = document.querySelector(popupSelector);
+        this._popup = popupSelector;
+        this._popupElement = document.querySelector(popupSelector);
+        this._closeButton = this._popupElement.querySelector(".popup__close");
     }
 
     open() {
-        this._popup.classList.add("popup_is-opened");
+        this._popupElement.classList.add("popup_is-opened");
     }
 
     close() {
-        this._popup.classList.remove("popup_is-opened");
+        closeModal(this._popupElement);
     }
     _hanldeEscClose = (evt) => {
         if (evt.key === "Escape") {
@@ -16,7 +19,7 @@ class Popup {
         }
     }
     setEventListeners() {
-        this._popup.addEventListener("mousedown", (evt) => {
+        this._popupElement.addEventListener("mousedown", (evt) => {
             if (
                 evt.target.classList.contains("popup") ||
                 evt.target.classList.contains("popup__close")
@@ -24,6 +27,8 @@ class Popup {
                 this.close();
             }
         });
+        document.addEventListener("keyup", this._hanldeEscClose);
         
     }
 }
+export default Popup;

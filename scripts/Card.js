@@ -1,10 +1,10 @@
 import { handleImageClick } from "./utils.js";
 class Card {
-  constructor(data, cardSelector,handleImageClick) {
+  constructor(data, cardSelector,handleCardClick) {
     this._name = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
-    this._handleImageClick = handleImageClick;
+    this._popupImage = handleCardClick;
   }
 
   _getTemplate() {
@@ -16,9 +16,15 @@ class Card {
   _setEventListeners() {
     this._deleteButton.addEventListener("click", this._handleDeleteCard);
     this._likeButton.addEventListener("click", this._handleLikeCard);
-    this._cardImage.addEventListener("click",()=>{this._handleImageClick(this);});
+    this._handleCardClick();
   }
 
+  _handleCardClick(){
+    this._element.querySelector(".card__image").addEventListener("click", () => {
+      const data = {name: this._name, link: this._link};
+      this._popupImage.open(data);
+    });
+  }
   _handleDeleteCard = () => {
     this._element.remove();
     this._element = null;

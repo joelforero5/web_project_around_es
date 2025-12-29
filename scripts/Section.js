@@ -5,7 +5,7 @@ class Section {
     this._container = document.querySelector(containerSelector);
 }
     renderItems() {
-        this._items.array.forEach(element => {
+        this._items.forEach(element => {
             this._renderer(element);
         });
     }
@@ -13,3 +13,4 @@ class Section {
         this._container.prepend(element);
     }
 }
+export default Section;
