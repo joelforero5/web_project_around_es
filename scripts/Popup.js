@@ -1,4 +1,4 @@
-import { closeModal} from "./utils.js";
+//import { closeModal} from "./utils.js";
 class Popup {
     constructor(popupSelector) {
         this._popup = popupSelector;
@@ -11,7 +11,7 @@ class Popup {
     }
 
     close() {
-        closeModal(this._popupElement);
+        this._popupElement.classList.remove("popup_is-opened");
     }
     _hanldeEscClose = (evt) => {
         if (evt.key === "Escape") {

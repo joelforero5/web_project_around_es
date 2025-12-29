@@ -4,14 +4,10 @@ import {
   handleCardFormSubmit,
   handleOpenEditModal,
   handleOpenAddCardModal,
-  handlePopupClose,
-  renderCard,
-  openModal,
   initialCards,
   validationConfig,
   openEditFormButton,
   openAddCardFormButton,
-  popup,
   profileFormSelector,
   cardFormSelector,
   cardFormElement,
@@ -23,11 +19,6 @@ import Section from "./Section.js";
 import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 
-
-//wraps
-const cardsWraps = document.querySelector(".cards__list");
-const editFormModalWindow = document.querySelector("#edit-popup");
-const cardFormModalWindow = document.querySelector("#new-card-popup");
 const cardFormValidator  = new FormValidator(validationConfig, cardFormElement);
 const profileFormValidator  = new FormValidator(validationConfig, profileFormElement);
 
@@ -37,14 +28,13 @@ const popupCardForm = new PopupWithForm("#new-card-popup",cardFormSelector,handl
 popupCardForm.setEventListeners();
 const popupImage = new PopupWithImage("#image-popup");
 popupImage.setEventListeners();
-openEditFormButton.addEventListener("click", () => {
-  handleOpenEditModal(editFormModalWindow);
+ openEditFormButton.addEventListener("click", () => {
+  handleOpenEditModal(popupProfileForm);
 });
 
-openAddCardFormButton.addEventListener("click", () => {
-  handleOpenAddCardModal(cardFormModalWindow);
-});
-
+ openAddCardFormButton.addEventListener("click", () => {
+  handleOpenAddCardModal(popupCardForm);
+}); 
 const sectionCards = new Section(
   {
     items: initialCards,
@@ -56,17 +46,6 @@ const sectionCards = new Section(
   ".cards__list"
 );
 sectionCards.renderItems();
-
-
-//popups.forEach((popup) => {
- // popup.addEventListener("mousedown", (evt) => {
-   // handlePopupClose(evt,[cardFormValidator,profileFormValidator]);
-  //});
-//});
-
-//profileFormElement.addEventListener("submit", handleProfileFormSubmit);
-//cardFormElement.addEventListener("submit", handleCardFormSubmit);
-
 
 cardFormValidator.enableValidation();
 profileFormValidator.enableValidation();

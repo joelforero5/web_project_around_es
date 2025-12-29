@@ -1,5 +1,7 @@
 import Card from "./Card.js";
+import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
+import Section from "./Section.js";
 //constants
 export const editFormSelector = ".edit-profile-form";
 //data and elements
@@ -40,8 +42,7 @@ export const validationConfig = {
 };
 
 //wraps
-export const popup = document.querySelectorAll(".popup");
-export const cardsWrap = document.querySelector(".cards__list");
+
 export const editFormModalWindow = document.querySelector("#edit-popup");
 export const cardFormModalWindow = document.querySelector("#new-card-popup");
 export const profileFormSelector = "#edit-profile-form";
@@ -74,78 +75,42 @@ export const imageElement = imageModalWindow.querySelector(".popup__image");
 export const imageCaption = imageModalWindow.querySelector(".card__description");
 export const imageLikeButton = imageModalWindow.querySelector(".card__like-button"); 
 export const imageDeleteButton = imageModalWindow.querySelector(".card__delete-button");
-//close buttons
 export const closeImageButton = imageModalWindow.querySelector(".popup__close");
 export const closeEditButton = editFormModalWindow.querySelector(".popup__close");
 export const popupImage = new PopupWithImage("#image-popup");
-popupImage.setEventListeners();
-//handlers
-export const isEscEvent = (evt, action) => {
-  if (evt.key === "Escape") {
-    const activePopup = document.querySelector(".popup_is-opened");
-    action(activePopup);
-  }
-};
-export const handleEscUp = (evt) => {
-  evt.preventDefault();
-  isEscEvent(evt, closeModal);
-};
-export const closeModal = (modal, validators) => {
-  modal.classList.remove("popup_is-opened");
-  document.removeEventListener("keyup", handleEscUp);
-  validators?.forEach((validator) => {
-    validator.ResetValidation();
-  });
-};
+export const popupCardForm = new PopupWithForm("#new-card-popup");
+export const popupProfileForm = new PopupWithForm("#edit-popup");
+
 export const handleProfileFormSubmit = (evt) => {
-  //evt.preventDefault();
   profileTitle.textContent = titleInput.value;
   profileDescription.textContent = descriptionInput.value;
-  closeModal(editFormModalWindow);
+  popupProfileForm.close();
 };
 export const handleCardFormSubmit = (evt) => {
-  //evt.preventDefault();
   const newCard = {
     name: cardNameInput.value,
     link: cardLinkInput.value,
   };
-  renderCard(newCard, cardsWrap);
-  closeModal(cardFormModalWindow);
-  cardFormElement.reset();
-};
-export const createCard = (data) => {
-  return new Card(data, "#card-template", popupImage).getView();
-};
-export const renderCard = (data, wrap) => {
-  wrap.prepend(createCard(data));
+  const newCardSection = new Section(
+    {
+      items: [newCard],
+      renderer: (cardData) => {
+        const card = new Card(cardData, "#card-template", popupImage);
+        newCardSection.addItem(card.getView());
+      },
+    },
+    ".cards__list"
+  );
+  newCardSection.renderItems();
 };
 
 export const handleOpenEditModal = (modal) => {
   titleInput.value = profileTitle.textContent;
   descriptionInput.value = profileDescription.textContent;
-  openModal(modal);
+  modal.open();
 };
 export const handleOpenAddCardModal = (modal) => {
-  openModal(modal);
-};
-export const handlePopupClose = (evt, validators) => {
-  if (
-    evt.target.classList.contains("popup") ||
-    evt.target.classList.contains("popup__close")
-  ) {
-    closeModal(evt.currentTarget, validators);
-  }
-};
-export const openModal = (modal) => {
-  modal.classList.add("popup_is-opened");
-  document.addEventListener("keyup", handleEscUp);
+  modal.open();
 };
 
-export const handleImageClick = (card) => {
-  imageElement.src = card.getLink();
-  imageCaption.textContent = card.getName();
-  imageElement.alt = card.getName();
-  openModal(imageModalWindow);
-
-};
 
