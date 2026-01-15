@@ -1,5 +1,9 @@
+// index.js
+import FormValidator from "./FormValidator.js";
+import Section from "./Section.js";
+import PopupWithForm from "./PopupWithForm.js";
+import Card from "./Card.js";
 import {
-  //openModal,
   handleProfileFormSubmit,
   handleCardFormSubmit,
   handleOpenEditModal,
@@ -8,44 +12,66 @@ import {
   validationConfig,
   openEditFormButton,
   openAddCardFormButton,
+  userInfo,
+  popupImage,
+  editFormModalWindow,
+  cardFormModalWindow,
   profileFormSelector,
   cardFormSelector,
-  cardFormElement,
-  profileFormElement
+  cardsContainerSelector
 } from "./utils.js";
-import FormValidator from "./FormValidator.js";
-import Card from "./Card.js";
-import Section from "./Section.js";
-import PopupWithForm from "./PopupWithForm.js";
-import PopupWithImage from "./PopupWithImage.js";
 
-const cardFormValidator  = new FormValidator(validationConfig, cardFormElement);
-const profileFormValidator  = new FormValidator(validationConfig, profileFormElement);
+// --------------------
+// VALIDADORES
+// --------------------
+const profileFormValidator = new FormValidator(validationConfig, editFormModalWindow.querySelector(profileFormSelector));
+const cardFormValidator = new FormValidator(validationConfig, cardFormModalWindow.querySelector(cardFormSelector));
 
-const popupProfileForm = new PopupWithForm("#edit-popup",profileFormSelector,handleProfileFormSubmit);
-popupProfileForm.setEventListeners();
-const popupCardForm = new PopupWithForm("#new-card-popup",cardFormSelector,handleCardFormSubmit);
-popupCardForm.setEventListeners();
-const popupImage = new PopupWithImage("#image-popup");
-popupImage.setEventListeners();
- openEditFormButton.addEventListener("click", () => {
-  handleOpenEditModal(popupProfileForm);
-});
+profileFormValidator.enableValidation();
+cardFormValidator.enableValidation();
 
- openAddCardFormButton.addEventListener("click", () => {
-  handleOpenAddCardModal(popupCardForm);
-}); 
+// --------------------
+// SECCIÓN DE TARJETAS
+// --------------------
 const sectionCards = new Section(
   {
     items: initialCards,
     renderer: (cardData) => {
-      const card = new Card(cardData, "#card-template",popupImage);
+      const card = new Card(cardData, "#card-template", popupImage);
       sectionCards.addItem(card.getView());
-    }
+    },
   },
-  ".cards__list"
+  cardsContainerSelector
 );
+
 sectionCards.renderItems();
 
-cardFormValidator.enableValidation();
-profileFormValidator.enableValidation();
+// --------------------
+// POPUPS
+// --------------------
+
+// Popup perfil
+const popupProfileForm = new PopupWithForm(editFormModalWindow, (formData) => {
+  handleProfileFormSubmit(formData, popupProfileForm);
+});
+popupProfileForm.setEventListeners();
+
+// Popup nueva tarjeta
+const popupCardForm = new PopupWithForm(cardFormModalWindow, (formData) => {
+  handleCardFormSubmit(formData, sectionCards, popupCardForm);
+});
+popupCardForm.setEventListeners();
+
+// Popup imagen (ya importado desde utils)
+popupImage.setEventListeners();
+
+// --------------------
+// EVENT LISTENERS BOTONES
+// --------------------
+openEditFormButton.addEventListener("click", () => {
+  handleOpenEditModal(popupProfileForm);
+});
+
+openAddCardFormButton.addEventListener("click", () => {
+  handleOpenAddCardModal(popupCardForm);
+});
