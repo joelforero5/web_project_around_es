@@ -1,53 +1,101 @@
 # Around The U.S.
 
-**Around The U.S.** es una página web diseñada como una red visual para explorar diferentes lugares dentro de los Estados Unidos. Utiliza una combinación de HTML, CSS y JavaScript para proporcionar una experiencia interactiva y adaptable a distintos tamaños de pantalla.
+**Around The U.S.** es una aplicación web interactiva tipo red social que permite a los usuarios explorar, crear y gestionar tarjetas de lugares dentro de los Estados Unidos.  
+La aplicación está completamente conectada a una **API REST**, con persistencia de datos y una arquitectura modular basada en **Programación Orientada a Objetos (POO)**.
+
+---
 
 ## 🛠️ Tecnologías utilizadas
 
-- HTML5 semántico
-- CSS3 con Grid Layout, Flexbox y Media Queries
-- JavaScript para interacciones dinámicas
-- Git y GitHub para control de versiones
-- GitHub Pages para despliegue
+### Frontend
+- HTML5 semántico  
+- CSS3 (Flexbox, Grid Layout, Media Queries)  
+- JavaScript (ES6+)  
+- Programación Orientada a Objetos (POO)  
+- Arquitectura modular  
+
+### Backend / Integraciones
+- API REST (CRUD)
+- Persistencia de usuarios y tarjetas
+- Manejo de Promises y `async/await`
+
+### Herramientas
+- Git & GitHub
+- GitHub Pages
+- Webpack
+
+---
 
 ## 📱 Diseño Responsivo
 
-Se han aplicado media queries y técnicas avanzadas de layout para garantizar una experiencia fluida desde desktop hasta dispositivos móviles de 320px. Se incluyó manejo de desbordamientos y adaptabilidad de imágenes y tipografías.
+- Adaptado para resoluciones desde **320px hasta desktop**
+- Layout flexible con Grid y Flexbox
+- Imágenes responsivas
+- Efectos visuales con `hover` y estados activos
+
+---
 
 ## ✨ Funcionalidades
 
-- Perfil de usuario editable
-- Tarjetas de lugares con botones de "me gusta"
-- Diseño visual limpio con uso de efectos hover y gradientes
-- Modal emergente con formulario interactivo
-- Accesibilidad visual mejorada
+### 👤 Perfil de usuario
+- Edición de nombre y descripción
+- Datos sincronizados con el servidor
+- Actualización del DOM tras respuesta exitosa de la API
 
-## Mejoras
-### Mejoras
+### 🖼️ Tarjetas de lugares
+- Render dinámico desde la API
+- Creación de nuevas tarjetas
+- Eliminación con **popup de confirmación**
+- Manejo correcto de tarjetas creadas dinámicamente
 
-En esta versión del proyecto se han implementado varias mejoras respecto a la versión anterior:  
+### ❤️ Sistema de likes
+- Like / dislike persistente en backend
+- Estado visual sincronizado con la base de datos
+- Lógica desacoplada entre UI y API
 
-1. **Programación Orientada a Objetos (POO)**
-   - Se crearon clases como `Card` y `FormValidator` para encapsular la lógica de cada componente, lo que mejora la organización del código, la reutilización y facilita el mantenimiento.  
-   - Cada tarjeta (`Card`) maneja sus propios eventos internos, como eliminar o dar “like”, mediante handlers definidos dentro de la clase.  
+### 🪟 Popups reutilizables
+- Popup de imagen
+- Popup con formulario
+- Popup de confirmación
+- Cierre por botón, clic externo y tecla `Esc`
 
-2. **Handlers encapsulados**
-   - Las funciones que manejan eventos ahora están ligadas a instancias de clases, evitando dependencias globales y mejorando la consistencia de los datos.  
-   - Los formularios (`FormValidator`) manejan sus propias validaciones y estados de botones de manera independiente.  
+### ✅ Formularios
+- Validación en tiempo real
+- Mensajes de error personalizados
+- Reseteo automático de errores
+- Bloqueo/desbloqueo dinámico del botón submit
 
-3. **Validaciones más robustas**
-   - Se implementó la validación de inputs con feedback visual inmediato mediante spans y estilos de error.  
-   - Los formularios pueden resetear correctamente sus errores al cerrar los modales, garantizando una experiencia de usuario limpia.  
+---
 
-4. **Escalabilidad y mantenimiento**
-   - El código ahora está estructurado en módulos (`Card.js`, `FormValidator.js`, `utils.js`, etc.), facilitando futuras extensiones del proyecto.  
-   - La separación de responsabilidades permite agregar nuevas funcionalidades (como filtros de tarjetas o diferentes tipos de formularios) sin afectar el código existente.  
+## 🧠 Arquitectura y mejoras
 
-5. **Experiencia de usuario mejorada**
-   - Los popups y modales responden a eventos de teclado y clic correctamente.  
-   - Los mensajes de error desaparecen al resetear formularios, evitando confusiones visuales.  
+### Programación Orientada a Objetos (POO)
+- Componentes encapsulados en clases:
+  - `Card`
+  - `Section`
+  - `Popup`
+  - `PopupWithForm`
+  - `PopupWithConfirmation`
+  - `FormValidator`
+  - `UserInfo`
+  - `Api`
+- Cada clase tiene una única responsabilidad
 
-> Esta versión demuestra cómo la aplicación puede evolucionar de una implementación funcional básica hacia un diseño más limpio y mantenible utilizando POO y buenas prácticas de modularización en JavaScript.
+### Separación de responsabilidades
+- La UI no conoce detalles de la API
+- La API no manipula el DOM
+- Handlers inyectados por dependencias
+
+### Manejo asíncrono
+- `Promise.all()` para carga inicial
+- Render solo tras respuestas exitosas
+- Manejo centralizado de errores
+
+### Escalabilidad
+- Fácil de extender con nuevas funcionalidades
+- Código mantenible y modular
+
+---
 
 ## 📁 Estructura del proyecto
 
@@ -55,30 +103,24 @@ En esta versión del proyecto se han implementado varias mejoras respecto a la v
 web_project_around/
 │
 ├── blocks/
-│   └── card.css
-│   └── cards.css
-│   └── content.css
-│   └── footer.css
-│   └── header.css
-│   └── page.css
-│   └── popup.css
-│   └── profile.css
 ├── images/
 ├── pages/
 │   └── index.css
 ├── scripts/
-│   └── Card.js
-│   └── FormValidator.js
-│   └── index.js
-│   └── Popup.js
-│   └── PopupWithForm.js
-│   └── PopupWithImage.js
-│   └── Section.js
-│   └── UserInfo.js
+│   ├── Api.js
+│   ├── Card.js
+│   ├── FormValidator.js
+│   ├── index.js
+│   ├── Popup.js
+│   ├── PopupWithForm.js
+│   ├── PopupWithImage.js
+│   ├── PopupWithConfirmation.js
+│   ├── Section.js
+│   ├── UserInfo.js
 │   └── utils.js
 ├── vendor/
-│   └── fonts/
-│   └── fonts.css
+│   ├── fonts/
+│   ├── fonts.css
 │   └── normalize.css
 ├── index.html
 └── README.md

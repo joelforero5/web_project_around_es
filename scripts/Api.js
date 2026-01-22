@@ -60,6 +60,15 @@ class Api {
             headers: this._headers 
         }).then(this._checkResponse);
     }
+    editUserAvatar(data) {
+        return fetch(this._baseUrl+'/users/me/avatar', {
+            method: 'PATCH',
+            headers: this._headers,
+            body: JSON.stringify({
+                avatar: data.link
+            })
+        }).then(this._checkResponse);
+    }
     
 }
 export default Api;

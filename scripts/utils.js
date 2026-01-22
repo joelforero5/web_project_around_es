@@ -6,26 +6,37 @@ import UserInfo from "./UserInfo.js";
 // --------------------
 // CONSTANTES / SELECTORES
 // --------------------
+const loadingText = "Guardando...";
+const defaultProfileSubmitText = "Guardar";
+const defaultCardSubmitText = "Crear";
 
 // Popups
 export const editFormModalWindow = document.querySelector("#edit-popup");
 export const cardFormModalWindow = document.querySelector("#new-card-popup");
 export const imageModalWindow = document.querySelector("#image-popup");
 export const deleteConfirmationModalWindow = document.querySelector("#delete-popup");
+export const editAvatarModalWindow = document.querySelector("#edit-profile-picture-popup");
 
 // Forms
 export const profileFormSelector = "#edit-profile-form";
 export const cardFormSelector = "#new-card-form";
+export const avatarFormSelector = "#edit-profile-picture-form";
+//Submit buttons
+export const profileFormSubmitButton = editFormModalWindow.querySelector(".popup__button");
+export const cardFormSubmitButton = cardFormModalWindow.querySelector(".popup__button");  
+export const avatarFormSubmitButton = editAvatarModalWindow.querySelector(".popup__button");
 
-// Botones
+// Botones Inicio
 export const openEditFormButton = document.querySelector(".profile__edit-button");
 export const openAddCardFormButton = document.querySelector(".profile__add-button");
+export const openEditAvatarButton = document.querySelector(".profile__image-container");
 
 // Inputs
 export const titleInput = document.querySelector(".popup__input_type_name");
 export const descriptionInput = document.querySelector(".popup__input_type_description");
 export const cardNameInput = document.querySelector(".popup__input_type_card-name");
 export const cardLinkInput = document.querySelector(".popup__input_type_url");
+export const avatarLinkInput = editAvatarModalWindow.querySelector(".popup__input_type_url");
 
 // Profile info
 export const profileTitle = document.querySelector(".profile__title");
@@ -62,6 +73,7 @@ export const validationConfig = {
 export const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   descriptionSelector: ".profile__description",
+  avatarSelector: ".profile__image"
 });
 
 // Popup imagen
@@ -83,15 +95,23 @@ export const handleOpenEditModal = (modal) => {
 export const handleOpenAddCardModal = (modal) => {
   modal.open();
 };
+// Abrir modal editar avatar
+export const handleOpenEditAvatarModal = (modal) => {
+  modal.open();
+};
 
 // Submit formulario perfil
 export const handleProfileFormSubmit = (api,formData, popup) => {
+  profileFormSubmitButton.textContent = loadingText;
   api.editUserInfo(formData).then((data) => {
     userInfo.setUserInfo({
       name: data.name,
-      description: data.about
+      description: data.about,
+      avatar: data.avatar
     });
     popup.close();
+  }).finally(()=>{
+    profileFormSubmitButton.textContent = defaultProfileSubmitText;
   }).catch((err) => {
     console.log(err);
   });
@@ -99,10 +119,25 @@ export const handleProfileFormSubmit = (api,formData, popup) => {
 
 // Submit formulario tarjeta
 export const handleCardFormSubmit = (api,formData, section, popup) => {
+  cardFormSubmitButton.textContent = loadingText;
   api.addNewCard(formData).then((data) => {
     section.renderItems([data],true);  
     popup.close();
+  }).finally(()=>{
+    cardFormSubmitButton.textContent = defaultCardSubmitText;
   }).catch((err) => {
     console.log(err);
   });
 };
+
+export const handleEditAvatarFormSubmit = (api,formData, popup) => {
+  avatarFormSubmitButton.textContent = loadingText;
+  api.editUserAvatar(formData).then((data) => {
+    userInfo.setUserAvatar({avatar: data.avatar});
+    popup.close();
+  }).finally(()=>{
+    avatarFormSubmitButton.textContent = defaultProfileSubmitText;
+  }).catch((err) => {
+    console.log(err);
+  });
+}

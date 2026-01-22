@@ -7,8 +7,10 @@ import Card from "./Card.js";
 import {
   handleProfileFormSubmit,
   handleCardFormSubmit,
+  handleEditAvatarFormSubmit,
   handleOpenEditModal,
   handleOpenAddCardModal,
+  handleOpenEditAvatarModal,
   validationConfig,
   openEditFormButton,
   openAddCardFormButton,
@@ -19,7 +21,11 @@ import {
   profileFormSelector,
   cardFormSelector,
   cardsContainerSelector,
-  deleteConfirmationModalWindow
+  deleteConfirmationModalWindow,
+  editAvatarModalWindow,
+  avatarFormSelector,
+  openEditAvatarButton
+
 } from "./utils.js";
 import Api from'./Api.js'
 // --------------------
@@ -83,7 +89,7 @@ async function loadInitialData() {
       api.getUserInfo(),
       api.getInitialCards()
     ]);
-    userInfo.setUserInfo({name: userData.name, description: userData.about});
+    userInfo.setUserInfo({name: userData.name, description: userData.about, avatar: userData.avatar});
     sectionCards.renderItems(initialCards,false);
    
   }catch(err){
@@ -117,6 +123,10 @@ const popupCardForm = new PopupWithForm(cardFormModalWindow, (formData) => {
   handleCardFormSubmit(api,formData, sectionCards, popupCardForm);
 });
 popupCardForm.setEventListeners();
+const popupAvatarForm = new PopupWithForm(editAvatarModalWindow, (formData) => {
+  handleEditAvatarFormSubmit(api,formData, popupAvatarForm);
+});
+popupAvatarForm.setEventListeners();
 // Popup confirmación borrado
 const popupDeleteConfirmation = new PopupWithConfirmation(deleteConfirmationModalWindow);
 popupDeleteConfirmation.setEventListeners();
@@ -132,4 +142,7 @@ openEditFormButton.addEventListener("click", () => {
 
 openAddCardFormButton.addEventListener("click", () => {
   handleOpenAddCardModal(popupCardForm);
+});
+openEditAvatarButton.addEventListener("click", () => {
+  handleOpenEditAvatarModal(popupAvatarForm); 
 });
