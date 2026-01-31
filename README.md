@@ -128,4 +128,4 @@ web_project_around/
 ```
 
 🚀 Deploy
-Puedes ver el proyecto desplegado aquí: https://joelforero5.github.io/web_project_around_es/
+Puedes ver el proyecto desplegado aquí: https://joelforero5.github.io/web_project_around_es/src
